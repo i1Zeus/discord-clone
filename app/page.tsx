@@ -1,5 +1,10 @@
+import { Button } from "@/components/ui/button";
+
 export default function Home() {
   return (
-    <p>Discord Clone</p>
+    <div>
+      <p>Discord Clone</p>
+      <Button>Click me</Button>
+    </div>
   );
 }
