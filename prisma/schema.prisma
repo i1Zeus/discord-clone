@@ -17,7 +17,7 @@ model Profile {
 
   servers  Server[]
   members  Member[]
-  channles Channle[]
+  channels Channle[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -33,7 +33,7 @@ model Server {
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   members  Member[]
-  channles Channle[]
+  channels Channle[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
