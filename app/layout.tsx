@@ -23,9 +23,9 @@ export default function RootLayout({
         <body className={font.className}>
           <ThemeProvider
             attribute="class"
-            defaultTheme="dark"
-            enableSystem={false}
             storageKey="discord-theme"
+            defaultTheme="dark"
+            enableSystem
           >
             {children}
           </ThemeProvider>
