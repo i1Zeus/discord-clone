@@ -17,7 +17,7 @@ model Profile {
 
   servers  Server[]
   members  Member[]
-  channels Channle[]
+  channels Channel[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -27,13 +27,13 @@ model Server {
   id         String @id @default(uuid())
   name       String
   imageUrl   String @db.Text
-  inviteCode String @db.Text
+  inviteCode String @unique
 
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
   members  Member[]
-  channels Channle[]
+  channels Channel[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -43,13 +43,13 @@ model Server {
 
 enum MemberRole {
   ADMIN
-  MEMBER
+  MODERATOR
   GUEST
 }
 
 model Member {
   id   String     @id @default(uuid())
-  role MemberRole @default(MEMBER)
+  role MemberRole @default(GUEST)
 
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
@@ -60,20 +60,20 @@ model Member {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([serverId])
   @@index([profileId])
+  @@index([serverId])
 }
 
-enum ChannleType {
+enum ChannelType {
   TEXT
   AUDIO
   VIDEO
 }
 
-model Channle {
+model Channel {
   id   String      @id @default(uuid())
   name String
-  type ChannleType @default(TEXT)
+  type ChannelType @default(TEXT)
 
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
@@ -84,6 +84,6 @@ model Channle {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([serverId])
   @@index([profileId])
+  @@index([serverId])
 }
