@@ -27,5 +27,3 @@ export const useModal = create<ModalStore>((set) => ({
   onOpen: (type, data = {}) => set({ isOpen: true, type, data }),
   onClose: () => set({ type: null, isOpen: false }),
 }));
-
-//* create Server Modal
