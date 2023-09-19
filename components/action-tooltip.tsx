@@ -15,7 +15,7 @@ interface ActionTooltipProps {
 }
 
 export const ActionTooltip = ({
-  label,
+  label, 
   children,
   side = "top",
   align = "center",
