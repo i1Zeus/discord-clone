@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus } from "lucide-react";
+import { Plus, Settings } from "lucide-react";
 
 import ActionTooltip from "../action-tooltip";
 import { useModal } from "@/hooks/use-modal-store";
@@ -41,12 +41,12 @@ export const ServerSection = ({
       )}
 
       {role === MemberRole.ADMIN && sectionType === "members" && (
-        <ActionTooltip label="Invite Friends" side="top">
+        <ActionTooltip label="Manage members" side="top">
           <button
             className="text-zinc-500 hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-300 transition"
-            onClick={() => onOpen("invite-member", { server })}
+            onClick={() => onOpen("members", { server })}
           >
-            <Plus className="w-4 h-4 mr-2 " />
+            <Settings className="w-4 h-4 mr-2 " />
           </button>
         </ActionTooltip>
       )}
