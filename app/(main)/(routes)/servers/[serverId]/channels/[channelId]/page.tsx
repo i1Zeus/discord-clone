@@ -3,6 +3,7 @@ import { redirectToSignIn } from "@clerk/nextjs";
 
 import { db } from "@/lib/db";
 import { currentProfile } from "@/lib/current-profile";
+import { ChatHeader } from "@/components/chat/chat-header";
 
 interface ChannelIdPageProps {
   params: {
@@ -32,7 +33,11 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
 
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
-      <ChatHeader />
+      <ChatHeader
+        name={channel.name}
+        serverId={channel.serverId}
+        type="channel"
+      />
     </div>
   );
 };
