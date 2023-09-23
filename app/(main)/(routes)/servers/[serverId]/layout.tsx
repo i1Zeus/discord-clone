@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { currentProfile } from "@/lib/current-profile";
 import { ServerSidebar } from "@/components/server/server-sidebar";
 
-const ServerLayout = async ({
+const ServerIdLayout = async ({
   children,
   params,
 }: {
@@ -13,6 +13,7 @@ const ServerLayout = async ({
   params: { serverId: string };
 }) => {
   const profile = await currentProfile();
+
   if (!profile) return redirectToSignIn();
 
   const server = await db.server.findUnique({
@@ -38,4 +39,4 @@ const ServerLayout = async ({
   );
 };
 
-export default ServerLayout;
+export default ServerIdLayout;

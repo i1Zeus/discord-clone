@@ -1,19 +1,21 @@
-import { redirect } from "next/navigation";
 import { redirectToSignIn } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
 import { currentProfile } from "@/lib/current-profile";
-import { getOrCreateConversation } from "@/lib/conversation";
 import { ChatHeader } from "@/components/chat/chat-header";
-
+import { getOrCreateConversation } from "@/lib/conversation";
 interface MemberIdPageProps {
   params: {
-    serverId: string;
     memberId: string;
+    serverId: string;
+  };
+  searchParams: {
+    video?: boolean;
   };
 }
 
-const MemberIdPage = async ({ params }: MemberIdPageProps) => {
+const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
   const profile = await currentProfile();
 
   if (!profile) return redirectToSignIn();
@@ -43,7 +45,7 @@ const MemberIdPage = async ({ params }: MemberIdPageProps) => {
     memberOne.profileId === profile.id ? memberTwo : memberOne;
 
   return (
-    <div className="bg-white dark:bg-[313338] flex flex-col h-full">
+    <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
       <ChatHeader
         imageUrl={otherMember.profile.imageUrl}
         name={otherMember.profile.name}
