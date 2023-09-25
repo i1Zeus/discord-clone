@@ -2,6 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
+import qs from "query-string";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
@@ -10,45 +11,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import FileUpload from "@/components/file-upload";
 
 const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, {
-      message: "Server name is required",
-    })
-    .max(32),
-  imageUrl: z.string().min(2, {
-    message: "Server image is required",
+  fileUrl: z.string().min(2, {
+    message: "Attachment is required",
   }),
 });
 
-export const MassageFileModal = () => {
+export const MessageFileModal = () => {
   const { isOpen, onClose, onOpen, type, data } = useModal();
   const router = useRouter();
+
+  const { apiUrl, query } = data;
 
   const isModalOpen = isOpen && type === "message-file";
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      imageUrl: "",
+      fileUrl: "",
     },
   });
 
@@ -56,12 +45,19 @@ export const MassageFileModal = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/servers", values);
+      const url = qs.stringifyUrl({
+        url: apiUrl || "",
+        query,
+      });
+
+      await axios.post(url, {
+        ...values,
+        content: values.fileUrl,
+      });
 
       router.refresh();
-      window.location.reload();
-
       form.reset();
+      handleClose();
     } catch (error) {
       console.log(error);
     }
@@ -76,8 +72,11 @@ export const MassageFileModal = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Send File
+            Add Attachment
           </DialogTitle>
+          <DialogDescription className="text-center text-zinc-500">
+            Send a file as a message to your friends
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -85,12 +84,12 @@ export const MassageFileModal = () => {
               <div className="flex items-center justify-center text-center">
                 <FormField
                   control={form.control}
-                  name="imageUrl"
+                  name="fileUrl"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <FileUpload
-                          endpoint="serverImage"
+                          endpoint="messageFile"
                           value={field.value}
                           onChange={field.onChange}
                         />
@@ -99,27 +98,6 @@ export const MassageFileModal = () => {
                   )}
                 />
               </div>
-
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Server name
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Enter server name"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button variant="primary" disabled={isLoading}>
