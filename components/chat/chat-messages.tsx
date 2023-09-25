@@ -51,7 +51,7 @@ export const ChatMessages = ({
   if (status === "error")
     return (
       <div className="flex-1 flex flex-col justify-center items-center">
-        <ServerCrash className="w-7 h-7 text-zinc-500 my-4" />
+        <ServerCrash className="w-7 h-7 text-red-500 my-4 animate-pulse" />
         <p className="text-xs text-zinc-500 dark:text-zinc-400 capitalize">
           Something went wrong, please try refreshing the page.
         </p>
