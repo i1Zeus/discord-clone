@@ -84,6 +84,9 @@ export const ChatItem = ({
       });
 
       await axios.patch(url, values);
+
+      form.reset();
+      setIsEditing(false);
     } catch (error) {
       console.log(error);
     }
@@ -163,7 +166,7 @@ export const ChatItem = ({
             >
               {content}
               {isUpdated && !deleted && (
-                <span className="text-[10px] dark:text-zinc-400 text-zinc-500 ">
+                <span className="text-[10px] mx-2 text-zinc-500 dark:text-zinc-400">
                   (edited)
                 </span>
               )}

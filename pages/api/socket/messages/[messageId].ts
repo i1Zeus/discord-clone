@@ -1,9 +1,9 @@
 import { NextApiRequest } from "next";
+import { MemberRole } from "@prisma/client";
 
 import { NextApiResponseServerIo } from "@/types";
 import { currentProfilePages } from "@/lib/current-profile-pages";
 import { db } from "@/lib/db";
-import { MemberRole } from "@prisma/client";
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,10 +19,10 @@ export default async function handler(
 
     if (!profile) return res.status(401).json({ error: "Unauthorized" });
 
-    if (!serverId) return res.status(400).json({ error: "Server ID Missing" });
+    if (!serverId) return res.status(400).json({ error: "Server ID missing" });
 
     if (!channelId)
-      return res.status(400).json({ error: "Channel ID Missing" });
+      return res.status(400).json({ error: "Channel ID missing" });
 
     const server = await db.server.findFirst({
       where: {
@@ -38,22 +38,22 @@ export default async function handler(
       },
     });
 
-    if (!server) return res.status(404).json({ error: "Server Not Found" });
+    if (!server) return res.status(404).json({ error: "Server not found" });
 
     const channel = await db.channel.findFirst({
       where: {
         id: channelId as string,
-        serverId: server.id,
+        serverId: serverId as string,
       },
     });
 
-    if (!channel) return res.status(404).json({ error: "Channel Not Found" });
+    if (!channel) return res.status(404).json({ error: "Channel not found" });
 
     const member = server.members.find(
-      (member) => member.profileId === member.id
+      (member) => member.profileId === profile.id
     );
 
-    if (!member) return res.status(404).json({ error: "Member Not Found" });
+    if (!member) return res.status(404).json({ error: "Member not found" });
 
     let message = await db.message.findFirst({
       where: {
@@ -70,7 +70,7 @@ export default async function handler(
     });
 
     if (!message || message.deleted)
-      return res.status(404).json({ error: "Message Not Found" });
+      return res.status(404).json({ error: "Message not found" });
 
     const isMessageOwner = message.memberId === member.id;
     const isAdmin = member.role === MemberRole.ADMIN;
@@ -86,7 +86,7 @@ export default async function handler(
         },
         data: {
           fileUrl: null,
-          content: "This message has been deleted",
+          content: "This message has been deleted.",
           deleted: true,
         },
         include: {
