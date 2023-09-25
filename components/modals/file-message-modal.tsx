@@ -32,7 +32,7 @@ export const MessageFileModal = () => {
 
   const { apiUrl, query } = data;
 
-  const isModalOpen = isOpen && type === "message-file";
+  const isModalOpen = isOpen && type === "file-message";
 
   const form = useForm({
     resolver: zodResolver(formSchema),
