@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import FileUpload from "@/components/file-upload";
+import { FileUpload } from "@/components/file-upload";
 
 const formSchema = z.object({
   fileUrl: z.string().min(2, {
