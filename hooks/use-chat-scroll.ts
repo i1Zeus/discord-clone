@@ -31,17 +31,21 @@ export const useChatScroll = ({
     return () => {
       topDiv?.removeEventListener("scroll", handleScroll);
     };
-  }, [chatRef, shouldLoadMore, loadMore]);
+  }, [shouldLoadMore, loadMore, chatRef]);
 
   useEffect(() => {
     const bottomDiv = bottomRef?.current;
-    const topDiv = chatRef?.current;
+    const topDiv = chatRef.current;
     const shouldAutoScroll = () => {
-      if (!hasInitialized && bottomDiv) setHasInitialized(true);
+      if (!hasInitialized && bottomDiv) {
+        setHasInitialized(true);
+        return true;
+      }
+
       if (!topDiv) return false;
+
       const distanceFromBottom =
         topDiv.scrollHeight - topDiv.scrollTop - topDiv.clientHeight;
-
       return distanceFromBottom <= 100;
     };
 
