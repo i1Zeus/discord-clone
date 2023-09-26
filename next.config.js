@@ -3,7 +3,7 @@ const nextConfig = {
   webpack: (config) => {
     config.externals.push({
       "utf-8-validate": "commonjs utf-8-validate",
-      bufferUtil: "commonjs bufferutil",
+      bufferutil: "commonjs bufferutil",
     });
 
     return config;
