@@ -64,7 +64,7 @@ export default async function handler(
 
     if (!member) return res.status(404).json({ error: "Member not found" });
 
-    const message = await db.directMessage.create({
+    const directMessage = await db.directMessage.create({
       data: {
         content,
         fileUrl,
@@ -82,9 +82,9 @@ export default async function handler(
 
     const channelKey = `chat:${conversation.id}:messages`;
 
-    res?.socket?.server?.io?.emit(channelKey, message);
+    res?.socket?.server?.io?.emit(channelKey, directMessage);
 
-    return res.status(200).json(message);
+    return res.status(200).json(directMessage);
   } catch (error) {
     console.log("[DIRECT_MESSAGES_POST]", error);
     return res.status(500).json({
