@@ -3,8 +3,11 @@ import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
 import { currentProfile } from "@/lib/current-profile";
-import { ChatHeader } from "@/components/chat/chat-header";
 import { getOrCreateConversation } from "@/lib/conversation";
+
+import { ChatInput } from "@/components/chat/chat-input";
+import { ChatHeader } from "@/components/chat/chat-header";
+import { ChatMessages } from "@/components/chat/chat-messages";
 interface MemberIdPageProps {
   params: {
     memberId: string;
@@ -51,6 +54,27 @@ const MemberIdPage = async ({ params, searchParams }: MemberIdPageProps) => {
         name={otherMember.profile.name}
         serverId={params.serverId}
         type="conversation"
+      />
+      <ChatMessages
+        type="conversation"
+        member={currentMember}
+        name={otherMember.profile.name}
+        chatId={conversation.id}
+        apiUrl="/api/direct-messages"
+        socketUrl="/api/socket/direct-messages"
+        socketQuery={{
+          conversationId: conversation.id,
+        }}
+        paramKey="conversationId"
+        paramValue={conversation.id}
+      />
+      <ChatInput
+        type="channel"
+        name={otherMember.profile.name}
+        apiUrl="/api/socket/direct-messages"
+        query={{
+          conversationId: conversation.id,
+        }}
       />
     </div>
   );
